@@ -1,0 +1,13 @@
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+
+@source '../../../../app/Filament/**/*';
+@source '../../../../resources/views/filament/**/*';
+
+
+.fi-simple-layout {
+    @apply bg-[#0c0f1a];
+}
+
+.fi-simple-main {
+    @apply bg-[#1b2035];
+}
