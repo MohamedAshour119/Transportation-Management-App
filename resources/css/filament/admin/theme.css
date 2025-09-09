@@ -4,10 +4,41 @@
 @source '../../../../resources/views/filament/**/*';
 
 
-.fi-simple-layout {
+.fi-simple-layout,
+.fi-sidebar {
     @apply bg-[#0c0f1a];
 }
 
-.fi-simple-main {
+.fi-topbar {
+    @apply bg-[#0c0f1a];
+    @apply ring-[#4893b724];
+}
+
+.fi-main-ctn {
+    @apply bg-[#0e121e];
+}
+
+.fi-simple-main,
+.fi-section,
+.fi-ta-content-ctn,
+.fi-ta-header-toolbar,
+.fi-pagination,
+.fi-modal-window,
+.fi-dropdown-panel,
+.fi-fo-date-time-picker-panel,
+.fi-fo-date-time-picker-month-select{
     @apply bg-[#1b2035];
+}
+
+.fi-input,
+.fi-input-wrp-prefix {
+    @apply bg-[#1b2035];
+}
+
+.fi-input {
+    @apply rounded-r-xl;
+}
+
+.fi-input-wrp-prefix {
+    @apply rounded-l-xl;
 }
