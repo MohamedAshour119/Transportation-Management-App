@@ -13,13 +13,16 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
-
+use UnitEnum;
 class DriverResource extends Resource
 {
     protected static ?string $model = Driver::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUserGroup;
+    protected static string | UnitEnum | null $navigationGroup = 'Management';
 
+
+protected static string | UnitEnum $unit = UnitEnum::class;
     public static function form(Schema $schema): Schema
     {
         return DriverForm::configure($schema);
