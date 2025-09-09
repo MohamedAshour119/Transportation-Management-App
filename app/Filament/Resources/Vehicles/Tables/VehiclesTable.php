@@ -65,8 +65,8 @@ class VehiclesTable
             ])
             ->filters([
                 SelectFilter::make('company')
-                ->relationship('company', 'name')
-                ->preload(),
+                    ->relationship('company', 'name')
+                    ->preload(),
             
                 SelectFilter::make('make')
                     ->options(fn () => Vehicle::distinct()->pluck('make', 'make')->toArray()),
@@ -88,6 +88,6 @@ class VehiclesTable
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])->defaultSort('created_at', 'desc');
     }
 }
