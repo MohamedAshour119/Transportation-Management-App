@@ -5,7 +5,8 @@
 
 
 .fi-simple-layout,
-.fi-sidebar {
+.fi-sidebar,
+.fi-sidebar-header {
     @apply bg-[#0c0f1a];
 }
 
