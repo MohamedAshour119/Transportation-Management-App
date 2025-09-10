@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('drivers', function (Blueprint $table) {
             $table->id();
             $table->string('full_name');
-            $table->foreignId('company_id')->constrained()->restrictOnDelete()->cascadeOnUpdate();
+            $table->foreignId('company_id')->nullable()->constrained()->restrictOnDelete()->cascadeOnUpdate();
             $table->string('email')->unique();
             $table->string('phone')->nullable();
             $table->string('address')->nullable();

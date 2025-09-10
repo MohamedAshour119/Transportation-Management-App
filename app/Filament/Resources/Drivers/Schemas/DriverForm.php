@@ -24,7 +24,6 @@ class DriverForm
                     
                     Select::make('company_id')
                         ->relationship('company', 'name')
-                        ->required()
                         ->searchable()
                         ->preload(),
                     

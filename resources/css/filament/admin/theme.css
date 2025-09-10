@@ -10,8 +10,17 @@
 }
 
 .fi-topbar {
-    @apply bg-[#0c0f1a];
+    @apply bg-[#0c0f1a] relative;
     @apply ring-[#4893b724];
+}
+
+/* Center the custom Active Trips indicator inside the topbar */
+.fi-topbar .tma-active-trips {
+    @apply absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center;
+}
+
+.fi-topbar .tma-active-trips a {
+    @apply text-xs font-medium text-primary-500 hover:text-primary-400;
 }
 
 .fi-main-ctn {
@@ -41,4 +50,15 @@
 
 .fi-input-wrp-prefix {
     @apply rounded-l-xl;
+}
+
+
+
+.fi-input-wrp-content-ctn {
+    @apply bg-transparent;
+}
+
+.fi-sc.fi-inline.fi-sc-has-gap.fi-sc-dense, .fi-ta-filter-indicators, .fi-no-notification-title, .fi-no-notification.fi-status-success,
+.fi-input-wrp-content-ctn .fi-fo-textarea .fi-input-wrp-content-ctn{
+    @apply bg-[#1B2035];
 }

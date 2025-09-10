@@ -19,6 +19,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Filament\Enums\ThemeMode;
+use Filament\View\PanelsRenderHook;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -57,6 +58,7 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
             ])
             ->darkMode(true, true)
+            ->renderHook(PanelsRenderHook::TOPBAR_END, fn () => view('filament.admin.active-trips-indicator'))
             ->viteTheme('resources/css/filament/admin/theme.css');
     }
 }

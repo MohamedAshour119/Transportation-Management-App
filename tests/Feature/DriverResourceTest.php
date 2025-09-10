@@ -65,7 +65,6 @@ test('can validate driver creation', function () {
         ->assertHasFormErrors([
             'full_name' => 'required',
             'email' => 'email',
-            'company_id' => 'required',
         ]);
 });
 
@@ -142,7 +141,6 @@ test('can validate driver update', function () {
         ->assertHasFormErrors([
             'full_name' => 'required',
             'email' => 'email',
-            'company_id' => 'required',
         ]);
 });
 

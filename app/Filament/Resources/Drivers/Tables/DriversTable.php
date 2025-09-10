@@ -19,6 +19,10 @@ class DriversTable
     {
         return $table
             ->columns([
+                TextColumn::make('id')
+                    ->searchable()
+                    ->sortable(),
+
                 TextColumn::make('full_name')
                     ->searchable()
                     ->sortable(),
