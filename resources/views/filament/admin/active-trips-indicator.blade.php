@@ -1,20 +1,8 @@
 @php
     use App\Models\Trip;
     use App\Filament\Resources\Trips\TripResource;
-    use App\Models\Driver;
-
-    // $driver = Driver::where('full_name', 'Kevin Lee')->first();
-    // dd($driver->trips);
-
     $activeCount = Trip::getActiveTrips()->count();
-    // dd(Trip::getActiveTrips());
 @endphp
-
-{{-- @php
-    use App\Models\Trip;
-    use App\Filament\Resources\Trips\TripResource;
-    $activeCount = Trip::getActiveTrips()->count();
-@endphp --}}
 
 <div class="tma-active-trips">
     <a

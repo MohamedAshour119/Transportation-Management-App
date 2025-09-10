@@ -23,7 +23,9 @@
     @apply text-xs font-medium text-primary-500 hover:text-primary-400;
 }
 
-.fi-main-ctn {
+.fi-main-ctn,
+.fi-section.fi-section-not-contained
+{
     @apply bg-[#0e121e];
 }
 
@@ -35,14 +37,19 @@
 .fi-modal-window,
 .fi-dropdown-panel,
 .fi-fo-date-time-picker-panel,
-.fi-fo-date-time-picker-month-select{
+.fi-fo-date-time-picker-month-select,
+.fi-input,
+.fi-input-wrp-prefix,
+.fi-sc.fi-inline.fi-sc-has-gap.fi-sc-dense,
+.fi-ta-filter-indicators,
+.fi-no-notification-title,
+.fi-no-notification.fi-status-success,
+.fi-input-wrp-content-ctn .fi-fo-textarea .fi-input-wrp-content-ctn,
+.fi-wi-stats-overview-stat
+{
     @apply bg-[#1b2035];
 }
 
-.fi-input,
-.fi-input-wrp-prefix {
-    @apply bg-[#1b2035];
-}
 
 .fi-input {
     @apply rounded-r-xl;
@@ -58,7 +65,6 @@
     @apply bg-transparent;
 }
 
-.fi-sc.fi-inline.fi-sc-has-gap.fi-sc-dense, .fi-ta-filter-indicators, .fi-no-notification-title, .fi-no-notification.fi-status-success,
-.fi-input-wrp-content-ctn .fi-fo-textarea .fi-input-wrp-content-ctn{
-    @apply bg-[#1B2035];
+.fi-wi {
+    @apply -mt-8;
 }
