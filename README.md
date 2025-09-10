@@ -1,61 +1,206 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## Transportation Management App
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A Laravel 12 + Filament v4 application for managing companies, drivers, vehicles, and trips. It includes KPIs, availability tooling, and a clean Filament admin panel.
 
-## About Laravel
+This README documents a Windows-friendly setup using:
+- Herd (free) for PHP + Nginx web serving
+- Laragon for MySQL (since Herd free does not bundle MySQL)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Tech Stack
+- Laravel 12 (PHP 8.2+)
+- Filament v4
+- Pest (Testing)
+- MySQL 8 (via Laragon)
+- Vite (assets), Node 18+/20+
+- Tailwind V4 (Automatic installed via Laravel 12)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## Prerequisites
+- PHP 8.2+ (managed by Herd)
+- Composer 2.x
+- Node.js 18+ (20+ recommended) and npm
+- Herd (free): https://herd.laravel.com/
+- Laragon (for MySQL): https://laragon.org/
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Optional but recommended:
+- Redis (for queues/cache) – not required for local setup
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Local Environment Setup (Herd + Laragon)
 
-## Laravel Sponsors
+1) Clone the repository
+```bash
+git clone https://github.com/MohamedAshour119/Transportation-Management-App.git
+cd Transportation-Management-App
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+2) Install PHP dependencies
+```bash
+composer install
+```
 
-### Premium Partners
+3) Install JS dependencies and build assets
+```bash
+npm install
+# Development (HMR)
+npm run dev
+# or Production build
+npm run build
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+4) Create and configure your environment
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+Edit the following env keys for Herd + Laragon:
+```env
+APP_NAME="Transportation Management App"
+APP_ENV=local
+APP_DEBUG=true
+APP_URL=https://your-app.test             # Herd site URL
 
-## Contributing
+# Point to Laragon's MySQL
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=transportation_management
+DB_USERNAME=root                         # Laragon default
+DB_PASSWORD=                             # Laragon default is empty
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+# Queue / Cache (defaults are fine for local)
+QUEUE_CONNECTION=sync
+CACHE_DRIVER=file
+SESSION_DRIVER=file
+FILESYSTEM_DISK=public
+```
 
-## Code of Conduct
+5) Start services
+- Start Laragon and ensure MySQL is running (port 3306).
+- In Herd, add this project as a site and note the domain (e.g., `https://transportation-management-app.test`).
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+6) Database migration & seed
+```bash
+php artisan migrate
+php artisan db:seed
+```
 
-## Security Vulnerabilities
+7) Storage link (it's not required for the local app because there is not files or images used)
+```bash
+php artisan storage:link
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Now open your Herd site URL in a browser. The Filament admin panel will be available according to your panel configuration.
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Filament Admin
+- Version: Filament v4
+- Location: Admin pages, resources, and widgets are under `app/Filament/`
+- KPIs Page & Widgets:
+  - Page: `app/Filament/Pages/KPIs.php`
+  - Stats widget: `app/Filament/Widgets/KPIsWidget.php`
+  - Line chart widget: `app/Filament/Widgets/KPIsLineChartWidget.php`
+  - KPIs Blade view: `resources/views/filament/pages/k-p-is.blade.php`
+
+### KPI Caching
+To improve performance, the KPIs are cached:
+- Keys:
+  - `kpis.widget.stats`
+  - `kpis.line_chart.stats`
+- TTL: 60 seconds (configurable in the widget classes)
+- Automatic invalidation: when a `Trip` is created/updated/deleted (`app/Models/Trip.php::booted()`), both cache keys are forgotten so the KPIs refresh promptly.
+- Manual clears:
+```bash
+php artisan cache:clear
+php artisan optimize:clear
+```
+
+---
+
+## Availability Overview Page
+- Page class: `app/Filament/Pages/AvailabilityOverview.php`
+- Blade view: `resources/views/filament/pages/availability-overview.blade.php`
+- Functionality: pick a date-time range and view available drivers and vehicles in that period using helpers on `Trip`.
+
+Trip helpers used:
+- `Trip::getAvailableDrivers($start, $end, ?$companyId)`
+- `Trip::getAvailableVehicles($start, $end, ?$companyId)`
+
+---
+
+## Running Tests
+We use Pest.
+
+Run the full suite:
+```bash
+php artisan test
+```
+Run a specific file:
+```bash
+php artisan test --filter=AvailabilityOverviewPageTest
+```
+Generate coverage (requires Xdebug or PCOV):
+```bash
+php artisan test --coverage
+```
+
+Included feature tests cover:
+- CRUD resources (Company, Driver, Vehicle, Trip)
+- KPI helpers (active trips, available drivers/vehicles, completed trips this month)
+- Availability Overview scenarios
+- Overlapping trip validation
+
+---
+
+## Common Troubleshooting
+- Database connection errors
+  - Confirm Laragon MySQL is running on `127.0.0.1:3306` and the `.env` matches your DB name/user/pass.
+- URL / asset issues
+  - Ensure `APP_URL` matches your Herd site domain, rebuild assets if needed: `npm run build`.
+- Cache not updating
+  - KPI caches auto-clear on Trip create/update/delete. Manually clear with `php artisan cache:clear` if needed.
+- Filament/Schemas vs Forms API
+  - This project uses Filament v4 and leverages the new Schemas API where applicable.
+
+---
+
+## Useful Artisan Commands
+```bash
+# Database
+php artisan migrate              # Run migrations
+php artisan migrate:fresh --seed # Rebuild database with seeders
+
+# Cache / Config
+php artisan cache:clear
+php artisan config:clear
+php artisan route:clear
+php artisan optimize:clear
+
+# Assets
+npm run dev
+npm run build
+```
+
+---
+
+## Project Structure (high level)
+```
+app/
+  Filament/
+    Pages/
+    Widgets/
+  Models/
+config/
+database/
+resources/
+  views/
+  css/js/
+routes/
+```
+
+---
