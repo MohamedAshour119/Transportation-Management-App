@@ -6,6 +6,7 @@ use Filament\Widgets\StatsOverviewWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use App\Models\Trip;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 
 class KPIsWidget extends StatsOverviewWidget
 {
@@ -13,15 +14,25 @@ class KPIsWidget extends StatsOverviewWidget
     {
         $now = Carbon::now();
 
-        // Active trips in progress now
-        $activeTripsCount = Trip::getActiveTrips()->count();
+        // Cache KPIs for a short duration to reduce query load
+        $ttl = 60; // seconds
+        [$activeTripsCount, $availableDriversCount, $availableVehiclesCount, $completedThisMonthCount] = Cache::remember(
+            'kpis.widget.stats',
+            $ttl,
+            function () use ($now) {
+                $active = Trip::getActiveTrips()->count();
+                $availDrivers = Trip::getAvailableDrivers($now, $now)->count();
+                $availVehicles = Trip::getAvailableVehicles($now, $now)->count();
+                $completedThisMonth = Trip::getTripsCompletedThisMonth()->count();
 
-        // Available drivers and vehicles right now (no overlapping trips at this instant)
-        $availableDriversCount = Trip::getAvailableDrivers($now, $now)->count();
-        $availableVehiclesCount = Trip::getAvailableVehicles($now, $now)->count();
-
-        // Trips completed in the current month
-        $completedThisMonthCount = Trip::getTripsCompletedThisMonth()->count();
+                return [
+                    $active,
+                    $availDrivers,
+                    $availVehicles,
+                    $completedThisMonth,
+                ];
+            }
+        );
 
         return [
             Stat::make('Active Trips', (string) $activeTripsCount)
@@ -46,3 +57,4 @@ class KPIsWidget extends StatsOverviewWidget
         ];
     }
 }
+

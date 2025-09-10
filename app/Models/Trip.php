@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 
 class Trip extends Model
 {
@@ -179,5 +180,17 @@ class Trip extends Model
         }
 
         return $query->with(['driver', 'vehicle', 'company']);
+    }
+
+    protected static function booted()
+    {
+        $forget = function () {
+            Cache::forget('kpis.widget.stats');
+            Cache::forget('kpis.line_chart.stats');
+        };
+
+        static::created($forget);
+        static::updated($forget);
+        static::deleted($forget);
     }
 }

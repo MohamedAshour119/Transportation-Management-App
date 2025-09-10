@@ -5,6 +5,7 @@ namespace App\Filament\Widgets;
 use Filament\Widgets\ChartWidget;
 use App\Models\Trip;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 
 class KPIsLineChartWidget extends ChartWidget
 {
@@ -16,10 +17,24 @@ class KPIsLineChartWidget extends ChartWidget
     {
         $now = Carbon::now();
 
-        $activeTripsCount = Trip::getActiveTrips()->count();
-        $availableDriversCount = Trip::getAvailableDrivers($now, $now)->count();
-        $availableVehiclesCount = Trip::getAvailableVehicles($now, $now)->count();
-        $completedThisMonthCount = Trip::getTripsCompletedThisMonth()->count();
+        $ttl = 60; // seconds
+        [$activeTripsCount, $availableDriversCount, $availableVehiclesCount, $completedThisMonthCount] = Cache::remember(
+            'kpis.line_chart.stats',
+            $ttl,
+            function () use ($now) {
+                $active = Trip::getActiveTrips()->count();
+                $availDrivers = Trip::getAvailableDrivers($now, $now)->count();
+                $availVehicles = Trip::getAvailableVehicles($now, $now)->count();
+                $completedThisMonth = Trip::getTripsCompletedThisMonth()->count();
+
+                return [
+                    $active,
+                    $availDrivers,
+                    $availVehicles,
+                    $completedThisMonth,
+                ];
+            }
+        );
 
         return [
             'labels' => [
